@@ -7,33 +7,20 @@ import {
   TouchableOpacity,
   Button
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-
-const CarDriving = require('../Images/Onboarding2.png')
-const Progress = require('../Images/progress2.png')
-const Scroll = require('../Images/Scroll2.png')
-
-
-function Onboarding2(){
-
-    const navigation = useNavigation();
-
-  const handleProgressPress = () => {
-    navigation.navigate('Onboarding3'); 
-  };
+const CarDriving = require('../Images/OnBoarding3.png')
+const Progress = require('../Images/progress3.png')
+const Scroll = require('../Images/Scroll3.png')
+function Onboarding3(){
    
 
     return (
         <SafeAreaView style={styles.container}>
-            <TouchableOpacity style = {styles.button} onPress={()=>console.log("Skip pressed")}>
-                <Text style={styles.buttonText}>Skip</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleProgressPress}>
+            <TouchableOpacity onPress={()=> console.log("Progress pressed")}>
                 <Image source={Progress} style={styles.progress}/>
             </TouchableOpacity>
             <Image source={Scroll} style={styles.scroll}/>
             <Image source={CarDriving} style ={styles.content}/>
-            <Text style={styles.text}>Get real-time traffic information and avoid congested roads.</Text>
+            <Text style={styles.text}>Start planning your trips and save time on the road</Text>
         </SafeAreaView>
 
     );
@@ -44,10 +31,10 @@ const styles = StyleSheet.create({
         flex : 1,
     },
     content : {
-        height: 211.33,
-        width:317,
+        height: 221.33,
+        width:332,
         position: 'absolute',
-        top: 277, // Adjust the top position as needed
+        top: 267, // Adjust the top position as needed
         left: 37, // Adjust the left position as needed
         resizeMode: 'contain', // Adjust the image resize mode as needed
        
@@ -57,6 +44,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 553,
         left:30,
+        width:330,
         fontSize: 31,
         fontFamily:'roboto'
     },
@@ -94,4 +82,4 @@ const styles = StyleSheet.create({
 })
 
 
-export default Onboarding2;
+export default Onboarding3;

@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 const CarDriving = require('../Images/CarDrivingImage.png')
 const Progress = require('../Images/Progress.png')
 const Scroll = require('../Images/Scroll.png')
+
 function Onboarding1(){
   const navigation = useNavigation();
 

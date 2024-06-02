@@ -20,11 +20,18 @@ function Onboarding1() {
     const handleProgressPress = () => {
         navigation.navigate('Onboarding2');
     };
+
+    const handleSkipPress = () => {
+        navigation.navigate('HomeNavigation');
+    }
+
+
+
     return (
 
         <SafeAreaView style={styles.container}>
             <StatusBar backgroundColor="#1C2129" barStyle="light-content" />
-            <TouchableOpacity style={styles.button} onPress={() => console.log("Skip pressed")}>
+            <TouchableOpacity style={styles.button} onPress={handleSkipPress}>
                 <Text style={styles.buttonText}>Skip</Text>
             </TouchableOpacity>
             <Image

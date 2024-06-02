@@ -1,48 +1,54 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, StatusBar, Image } from 'react-native';
 import Car4 from "../Images/Car4.png"
 import PrimaryButton from "../components/PrimaryButton"
-import SecondartButton from "../components/SecondartButton"
+import SecondaryButton from "../components/SecondaryButton"
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 
 const GetStarted = () => {
+    const navigation = useNavigation();
+
+    const handlePhoneNoPage = () => {
+        navigation.navigate('PhoneNo');
+    };
+
+
     return (
         <SafeAreaView style={styles.container}>
-            <Image source={Car4} style={styles.content} />
-            <Text style={styles.heading}>Get Started!</Text>
+            <StatusBar backgroundColor="#1C2129" barStyle="light-content" />
+            <Image
+                source={Car4}
+                style={styles.image}
+            />
+            <Text style={styles.text}>
+                Get Started
+            </Text>
             <View style={styles.container2}>
-                <PrimaryButton title="Create Account" onPress={() => console.log("Create Account")} />
-                <SecondartButton title="Sign In" onPress={() => console.log("Login")} />
+                <PrimaryButton title="Create Account" onPress={handlePhoneNoPage} />
+                <SecondaryButton title="Sign In" onPress={handlePhoneNoPage} />
             </View>
         </SafeAreaView>
-
     );
 };
-
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        alignItems: 'center',
-        backgroundColor: '#263238'
+      flex: 1,
+      backgroundColor: '#1c2129',
+      alignItems: 'center',
     },
-    content: {
-        width: 334.5,
-        height: 223,
-        top:266,
-        resizeMode: 'contain',
-        position: 'absolute',
+    container2:{
+        marginTop:60,
     },
-    heading: {
-        position: 'absolute',
-        fontSize: 31,
-        color: '#FFFFFF',
-        top: 553,
+    image: {
+      marginTop: 240,
+      marginBottom: 50,
     },
-    container2: {
-        position: 'absolute',
-        top:677,
-    }
-
-});
-
+    text: {
+      fontSize: 31,
+      color: 'white',
+      textAlign: 'center',
+      width: 335,
+    },
+  });
 export default GetStarted;

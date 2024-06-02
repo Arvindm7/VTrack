@@ -1,6 +1,6 @@
 
 import React, { useEffect } from 'react';
-import { SafeAreaView, StyleSheet, Image } from 'react-native';
+import { SafeAreaView, StyleSheet, StatusBar, Image,  } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const OpeningImage = require('../Images/OpeningImage.png');
@@ -18,6 +18,7 @@ function OpeningScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor="#1C2129" barStyle="light-content" />
       <Image source={OpeningImage} style={styles.content} />
     </SafeAreaView>
   );
@@ -25,7 +26,7 @@ function OpeningScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#263238',
+    backgroundColor: '#1c2129',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

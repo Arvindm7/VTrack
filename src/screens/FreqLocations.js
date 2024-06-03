@@ -3,8 +3,8 @@ import React from 'react'
 
 const FreqLocations = () => {
   return (
-    <View>
-      <Text>FreqLocations</Text>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>FreqLocations !</Text>
     </View>
   )
 }

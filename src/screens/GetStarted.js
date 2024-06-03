@@ -33,22 +33,22 @@ const GetStarted = () => {
 };
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#1c2129',
-      alignItems: 'center',
+        flex: 1,
+        backgroundColor: '#1c2129',
+        alignItems: 'center',
     },
-    container2:{
-        marginTop:60,
+    container2: {
+        marginTop: 60,
     },
     image: {
-      marginTop: 240,
-      marginBottom: 50,
+        marginTop: 240,
+        marginBottom: 50,
     },
     text: {
-      fontSize: 31,
-      color: 'white',
-      textAlign: 'center',
-      width: 335,
+        fontSize: 31,
+        color: 'white',
+        textAlign: 'center',
+        width: 335,
     },
-  });
+});
 export default GetStarted;

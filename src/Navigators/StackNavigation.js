@@ -8,6 +8,7 @@ import Onboarding3 from '../screens/Onboarding3';
 import GetStarted from '../screens/GetStarted';
 import PhoneNo from '../screens/PhoneNo';
 import OtpPage from '../screens/OtpPage';
+import VerifiedPage from '../screens/VerifiedPage';
 
 const Stack = createNativeStackNavigator()
 
@@ -21,6 +22,7 @@ function StackNavigation() {
             <Stack.Screen name='GetStarted' component={GetStarted} />
             <Stack.Screen name='PhoneNo' component={PhoneNo} />
             <Stack.Screen name='OtpPage' component={OtpPage} />
+            <Stack.Screen name='VerifiedPage'component={VerifiedPage}/>
         </Stack.Navigator>
     );
 }

@@ -88,8 +88,11 @@ const PhoneNo = () => {
             <View style={styles.otpButton}>
                 <SecondaryButton title="Continue with Google" onPress={() => console.log("Skip pressed")} />
             </View>
-            {/* <View style={styles.otpButton}>
-                <SecondaryButton title="Proceed" onPress={() => navigation.navigate('OtpPage', { confirmData })} />
+            {/* <View style={styles.button}>
+                <SecondaryButton title="Continue with Google" onPress={() => console.log("Skip pressed")} />
+            </View> */}
+            {/* <View style={styles.button}>
+                <SecondaryButton title="Proceed"/>
             </View> */}
         </SafeAreaView>
     );

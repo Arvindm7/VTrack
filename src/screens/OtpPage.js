@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import auth from '@react-native-firebase/auth';
+import PrimaryButton from "../components/PrimaryButton"
 
 const OtpPage = ({ navigation, route }) => {
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
@@ -36,7 +37,7 @@ const OtpPage = ({ navigation, route }) => {
             await confirmData.confirm(otpCode); // verification logic
             Alert.alert('OTP Verified', 'Your phone number has been successfully verified!');
             // Navigate to the next screen or home screen after successful verification
-            navigation.navigate('Onboarding1'); // replace the screen with the HOME page which will be designed noe [includes maps in background]
+            navigation.navigate('VerifiedPage'); // screen replaced with verified page
         } catch (error) {
             Alert.alert('Error', 'Invalid OTP. Please try again.');
         }
@@ -67,9 +68,10 @@ const OtpPage = ({ navigation, route }) => {
                     <Text style={[styles.resendText, !resendEnabled && { color: 'gray' }]}>resend</Text>
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.verifyButton} onPress={() => verifyOtp(otp.join(''))}>
+            <PrimaryButton title="Verify" onPress={() => verifyOtp(otp.join(''))} /> 
+            {/* <TouchableOpacity style={styles.verifyButton} onPress={() => verifyOtp(otp.join(''))}>
                 <Text style={styles.verifyButtonText}>Verify</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
         </SafeAreaView>
     );
 };

@@ -88,12 +88,6 @@ const PhoneNo = () => {
             <View style={styles.otpButton}>
                 <SecondaryButton title="Continue with Google" onPress={() => console.log("Skip pressed")} />
             </View>
-            {/* <View style={styles.button}>
-                <SecondaryButton title="Continue with Google" onPress={() => console.log("Skip pressed")} />
-            </View> */}
-            {/* <View style={styles.button}>
-                <SecondaryButton title="Proceed"/>
-            </View> */}
         </SafeAreaView>
     );
 };
@@ -108,8 +102,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginTop: 20,
-        // flexDirection: 'row',
-        // alignItems: 'center',
         justifyContent: 'center',
     },
     title: {

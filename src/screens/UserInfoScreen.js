@@ -4,6 +4,7 @@ import firestore from '@react-native-firebase/firestore';
 import { useRoute } from '@react-navigation/native';
 import PrimaryButton from '../components/PrimaryButton';
 import { Picker } from '@react-native-picker/picker';
+import { useNavigation } from '@react-navigation/native';
 
 const UserInfoScreen = () => {
 
@@ -14,6 +15,7 @@ const UserInfoScreen = () => {
   const [age, setAge] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [loading, setLoading] = useState(true);
+  const navigation = useNavigation();
 
   // Hook to access the current route and its parameters
   const route = useRoute();
@@ -68,6 +70,7 @@ const UserInfoScreen = () => {
 
       if (response.ok) {
         Alert.alert('Success', 'User information saved successfully');
+        navigation.navigate('HomeScreen');
       } else {
         const errorText = await response.text();
         Alert.alert('Error', `Failed to save user information: ${errorText}`);

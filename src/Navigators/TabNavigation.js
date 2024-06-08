@@ -14,8 +14,6 @@ import Location_Inactive from '../Images/Navbar/Location_Inactive.png';
 import Profile_Active from '../Images/Navbar/Profile_Active.png';
 import Profile_Inactive from '../Images/Navbar/Profile_Inactive.png';
 
-
-
 function TabNavigation() {
 
     const Tab = createBottomTabNavigator();

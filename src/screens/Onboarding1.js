@@ -45,6 +45,7 @@ function Onboarding1() {
                 source={Scroll}
                 style={styles.smallImage}
             />
+
             <TouchableOpacity style={styles.arrowButtonContainer} onPress={handleProgressPress}>
                 <Image
                     source={Progress}

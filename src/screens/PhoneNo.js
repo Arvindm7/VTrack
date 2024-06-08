@@ -39,6 +39,20 @@ const PhoneNo = () => {
                 setConfirmData(response);
                 Alert.alert('OTP Sent', `OTP has been sent to +${countryCode} ${phoneNumber}`);
                 setCooldown(true);
+
+                //To be modified if required and fire store admin to be changed
+                // // Save phone number to Firestore
+                // const docRef = await firestore().collection('phoneNumbers').add({
+                // number: phoneNumber,
+                // timestamp: firestore.FieldValue.serverTimestamp(),
+                // });
+
+                // // Navigate to UserInfoScreen with phone number and doc ID
+                // navigation.navigate('otpPage', { firebaseId: docRef.id, phoneNumber,confirmData:response });
+
+
+
+
                 navigation.navigate('OtpPage', { confirmData: response }); //passing the OTP value to next page
             } catch (error) {
                 if (error.code === 'auth/network-request-failed') {

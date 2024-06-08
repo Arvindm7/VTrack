@@ -10,11 +10,13 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import SecondaryButton from "../components/SecondaryButton";
+import { useRoute } from '@react-navigation/native';
 
 const VerifiedImage = require('../Images/VerifiedImage.png');
 
 function VerifiedPage() {
     const navigation = useNavigation();
+    const route = useRoute();
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar backgroundColor="#1C2129" barStyle="light-content" />
@@ -26,7 +28,8 @@ function VerifiedPage() {
                 User Verified
             </Text>
             <View style={styles.button}>
-                <SecondaryButton title="Continue to SIgn In" />    
+                <SecondaryButton title="Continue to SIgn In" onPress={navigation.navigate('UserInfoScreen', { ...route.params })} />     
+                {/* passing the firebase id to UserInfoScreen.js Page */}
                 {/* add the navigation  */}
             </View>
         </SafeAreaView>

@@ -2,8 +2,12 @@ import React, { useState, useRef } from 'react';
 import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import PrimaryButton from "../components/PrimaryButton"
+import { useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
-const OtpPage = ({ navigation, route }) => {
+const OtpPage = () => {
+    const navigation = useNavigation();
+    const route = useRoute();
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
     const [resendEnabled, setResendEnabled] = useState(true);
     const inputs = useRef([]);
@@ -13,7 +17,6 @@ const OtpPage = ({ navigation, route }) => {
         let newOtp = [...otp];
         newOtp[index] = text;
         setOtp(newOtp);
-
         if (text && index < 5) {
             inputs.current[index + 1].focus();
         }
@@ -27,7 +30,7 @@ const OtpPage = ({ navigation, route }) => {
         if (resendEnabled) {
             // Logic to resend OTP has not been added yet. [ ... Pending Work to be done after all setup  ]
             setResendEnabled(false);
-            setTimeout(() => setResendEnabled(true), 60000); // Enable resend after 60 seconds
+            setTimeout(() => setResendEnabled(true), 6000); // Enable resend after 6 seconds
             Alert.alert('OTP Resent', 'A new OTP has been sent to your phone number.');
         }
     };
@@ -37,7 +40,7 @@ const OtpPage = ({ navigation, route }) => {
             await confirmData.confirm(otpCode); // verification logic
             Alert.alert('OTP Verified', 'Your phone number has been successfully verified!');
             // Navigate to the next screen or home screen after successful verification
-            navigation.navigate('VerifiedPage'); // screen replaced with verified page
+            navigation.navigate('VerifiedPage', { ...route.params }); // Passing ID to VerifiedPage.js page
         } catch (error) {
             Alert.alert('Error', 'Invalid OTP. Please try again.');
         }
@@ -69,9 +72,6 @@ const OtpPage = ({ navigation, route }) => {
                 </TouchableOpacity>
             </View>
             <PrimaryButton title="Verify" onPress={() => verifyOtp(otp.join(''))} /> 
-            {/* <TouchableOpacity style={styles.verifyButton} onPress={() => verifyOtp(otp.join(''))}>
-                <Text style={styles.verifyButtonText}>Verify</Text>
-            </TouchableOpacity> */}
         </SafeAreaView>
     );
 };

@@ -5,11 +5,10 @@ import PrimaryButton from "../components/PrimaryButton";
 import SecondaryButton from "../components/SecondaryButton";
 import auth from '@react-native-firebase/auth';
 import { useNavigation } from '@react-navigation/native';
-
+import firestore from '@react-native-firebase/firestore';
 
 const PhoneNo = () => {
     const navigation = useNavigation();
-    
     const [countryCode, setCountryCode] = useState('IN');
     const [callingCode, setCallingCode] = useState('91');
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -21,11 +20,10 @@ const PhoneNo = () => {
 
     useEffect(() => {
         if (cooldown) {
-            const timer = setTimeout(() => setCooldown(false), 60000); // 60 seconds cooldown to request for OTP again
+            const timer = setTimeout(() => setCooldown(false), 6000); // 6 seconds cooldown to request for OTP again
             return () => clearTimeout(timer);
         }
     }, [cooldown]);
-
 
     const sendOTP = async () => {
         if (cooldown) {
@@ -40,20 +38,16 @@ const PhoneNo = () => {
                 Alert.alert('OTP Sent', `OTP has been sent to +${countryCode} ${phoneNumber}`);
                 setCooldown(true);
 
-                //To be modified if required and fire store admin to be changed
-                // // Save phone number to Firestore
-                // const docRef = await firestore().collection('phoneNumbers').add({
-                // number: phoneNumber,
-                // timestamp: firestore.FieldValue.serverTimestamp(),
-                // });
+                // Save phone number to Firestore
+                const docRef = await firestore().collection('phoneNumbers').add({
+                    number: phoneNumber,
+                    timestamp: firestore.FieldValue.serverTimestamp(),
+                });
 
-                // // Navigate to UserInfoScreen with phone number and doc ID
-                // navigation.navigate('otpPage', { firebaseId: docRef.id, phoneNumber,confirmData:response });
-
+                // Navigate to UserInfoScreen with phone number and doc ID
+                navigation.navigate('OtpPage', { firebaseId: docRef.id, phoneNumber, confirmData: response });
 
 
-
-                navigation.navigate('OtpPage', { confirmData: response }); //passing the OTP value to next page
             } catch (error) {
                 if (error.code === 'auth/network-request-failed') {
                     Alert.alert('Network Error', 'A network error has occurred. Please check your internet connection and try again.');
@@ -100,7 +94,7 @@ const PhoneNo = () => {
                 <PrimaryButton title="Continue" onPress={sendOTP} />
             </TouchableOpacity>
             <View style={styles.otpButton}>
-                <SecondaryButton title="Continue with Google" onPress={() => console.log("Skip pressed")} />
+                <SecondaryButton title="Continue with Google" onPress={() => console.log("Continue with Google pressed")} />
             </View>
         </SafeAreaView>
     );
@@ -132,7 +126,6 @@ const styles = StyleSheet.create({
     phoneNumberContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-
         borderColor: '#333',
         borderWidth: 1,
         borderRadius: 10,
@@ -152,11 +145,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
     },
     otpButton: {
-        // backgroundColor: '#1E90FF',
-        // padding: 15,
-        // borderRadius: 10,
         alignItems: 'center',
-        // marginTop: 20,
     },
     otpButtonText: {
         color: '#ffffff',

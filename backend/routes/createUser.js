@@ -3,11 +3,9 @@ const User = require('../models/users');
 
 const router = express.Router();
 
-
 router.post('/migrate', async (req, res) => {
     // Destructure user information from request body
     const { firebaseId, name, email, gender, age, phoneNumber } = req.body;
-  
   
      // Check if any required fields are missing
     if (!firebaseId || !name || !email || !gender || !age || !phoneNumber) {
@@ -33,6 +31,5 @@ router.post('/migrate', async (req, res) => {
       res.status(500).send('Error saving user information');
     }
   });
-
 
   module.exports = router;

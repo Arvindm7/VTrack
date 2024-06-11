@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { useRoute } from '@react-navigation/native';
-import PrimaryButton from './components/PrimaryButton';
+import PrimaryButton from '../components/PrimaryButton';
 import { Picker } from '@react-native-picker/picker';
+import { useNavigation } from '@react-navigation/native';
 
 const UserInfoScreen = () => {
 
@@ -14,14 +15,13 @@ const UserInfoScreen = () => {
   const [age, setAge] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [loading, setLoading] = useState(true);
+  const navigation = useNavigation();
 
-
-   // Hook to access the current route and its parameters
+  // Hook to access the current route and its parameters
   const route = useRoute();
    const { firebaseId } = route.params;// Extract firebaseId from route parameters
 
-
-   // useEffect to fetch phone number from Firestore when the component mounts
+  // useEffect to fetch phone number from Firestore when the component mounts
   useEffect(() => {
     const fetchPhoneNumber = async () => {
       try {
@@ -60,7 +60,7 @@ const UserInfoScreen = () => {
       };
 
        // Send a POST request to the server with user data
-      const response = await fetch('http://192.168.29.97:3000/api/migrate', {
+      const response = await fetch('http://192.168.190.52:3000/api/migrate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -70,6 +70,7 @@ const UserInfoScreen = () => {
 
       if (response.ok) {
         Alert.alert('Success', 'User information saved successfully');
+        navigation.navigate('HomeScreen');
       } else {
         const errorText = await response.text();
         Alert.alert('Error', `Failed to save user information: ${errorText}`);
@@ -135,8 +136,8 @@ const UserInfoScreen = () => {
         onChangeText={setAge}
         keyboardType="numeric"
       />
-      <View> 
-      <PrimaryButton title="Proceed" style={styles.button} onPress={handleSaveUserInfo} />
+      <View style={styles.button}> 
+      <PrimaryButton title="Proceed"  onPress={handleSaveUserInfo} />
       </View>
       
     </View>
@@ -238,7 +239,7 @@ const styles = StyleSheet.create({
     fontSize:16,
   },
   button: {
-    backgroundColor: '#FFFFFF',
+    // backgroundColor: '#FFFFFF',
     borderRadius: 25,
     padding:15,
     width: 330,

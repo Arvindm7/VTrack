@@ -6,6 +6,7 @@ const cors = require('cors');// CORS middleware
 const User = require('./models/users');// User model
 const connectDB = require('./db/db'); // Import the database connection
 const routes = require('./routes/createUser'); // Import the routes
+const driverRoutes = require('./routes/driverUser'); // Import the driver routes
 
 // Load Firebase service account key from environment variables
 const serviceAccount = require(process.env.FIREBASE_SERVICE_ACCOUNT);
@@ -23,6 +24,7 @@ app.use(express.json());// Middleware to parse JSON request bodies
 
 // Use the routes
 app.use('/api', routes);
+app.use('/api', driverRoutes);
 
 app.listen(port, () => {
   connectDB();

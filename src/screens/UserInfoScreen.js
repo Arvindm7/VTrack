@@ -5,6 +5,7 @@ import { useRoute } from '@react-navigation/native';
 import PrimaryButton from '../components/PrimaryButton';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../Context/AuthProvider';
 
 const UserInfoScreen = () => {
 
@@ -20,6 +21,8 @@ const UserInfoScreen = () => {
   // Hook to access the current route and its parameters
   const route = useRoute();
    const { firebaseId } = route.params;// Extract firebaseId from route parameters
+
+  const {isLogged, setIsLogged}=useAuth();
 
   // useEffect to fetch phone number from Firestore when the component mounts
   useEffect(() => {
@@ -60,7 +63,7 @@ const UserInfoScreen = () => {
       };
 
        // Send a POST request to the server with user data
-      const response = await fetch('http://192.168.190.52:3000/api/migrate', {
+      const response = await fetch('http://192.168.1.4:3000/api/migrate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -70,7 +73,7 @@ const UserInfoScreen = () => {
 
       if (response.ok) {
         Alert.alert('Success', 'User information saved successfully');
-        navigation.navigate('HomeScreen');
+        setIsLogged(!isLogged);
       } else {
         const errorText = await response.text();
         Alert.alert('Error', `Failed to save user information: ${errorText}`);

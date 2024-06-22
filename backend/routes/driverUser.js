@@ -7,10 +7,10 @@ const driverRouter = express.Router();
 // Create a new driver
 driverRouter.post('/drivers', async (req, res) => {
     // Destructure driver information from request body
-    const { firebaseId, name, licenseNumber, gender, age, vehicle, status } = req.body;
+    const { firebaseId, name, licenseNumber, gender, age, vehicle, status ,email,phoneNumber} = req.body;
 
     // Check if any required fields are missing
-    if (!firebaseId || !name || !licenseNumber || !gender || !age || !vehicle || !status) {
+    if (!firebaseId || !name || !licenseNumber || !gender || !age || !vehicle) {
         return res.status(400).send('Missing required fields');
     }
     try {
@@ -18,6 +18,8 @@ driverRouter.post('/drivers', async (req, res) => {
         const driver = new Driver({
             firebaseId,
             name,
+            email,
+            phoneNumber,
             gender,
             age,
             vehicle, // Add this line

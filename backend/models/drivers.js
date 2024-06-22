@@ -6,6 +6,15 @@ const driverSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    phoneNumber: {
+        type: String,
+        required: true,
+    },
     name: {
         type: String,
         required: true,
@@ -43,6 +52,6 @@ const driverSchema = new mongoose.Schema({
         enum: ['AVAILABLE', 'ON_TRIP'],
         default: 'AVAILABLE',
     },
-},{ timestamps: true });
+}, { timestamps: true });
 
 module.exports = mongoose.model('Driver', driverSchema);

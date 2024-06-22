@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator,TouchableOpacity } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { useRoute } from '@react-navigation/native';
 import PrimaryButton from '../components/PrimaryButton';
@@ -20,15 +20,15 @@ const UserInfoScreen = () => {
 
   // Hook to access the current route and its parameters
   const route = useRoute();
-   const { firebaseId } = route.params;// Extract firebaseId from route parameters
+  const { firebaseId } = route.params;// Extract firebaseId from route parameters
 
-  const {isLogged, setIsLogged}=useAuth();
+  const { isLogged, setIsLogged } = useAuth();
 
   // useEffect to fetch phone number from Firestore when the component mounts
   useEffect(() => {
     const fetchPhoneNumber = async () => {
       try {
-         // Fetch the document from Firestore using the provided firebaseId
+        // Fetch the document from Firestore using the provided firebaseId
         const doc = await firestore().collection('phoneNumbers').doc(firebaseId).get();
         if (doc.exists) {
           setPhoneNumber(doc.data().number);// Set the phone number state if document exists
@@ -62,7 +62,7 @@ const UserInfoScreen = () => {
         phoneNumber,
       };
 
-       // Send a POST request to the server with user data
+      // Send a POST request to the server with user data
       const response = await fetch('http://192.168.1.4:3000/api/migrate', {
         method: 'POST',
         headers: {
@@ -89,10 +89,17 @@ const UserInfoScreen = () => {
     return <ActivityIndicator size="large" color="#0000ff" />;
   }
 
+  const handleDriverSignIn = () => {
+    navigation.navigate('DriverInfoScreen',{ ...route.params });
+  }
+
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.driver_button} onPress={handleDriverSignIn}>
+        <Text style={styles.driver_buttonText}>Sign in As Driver</Text>
+      </TouchableOpacity>
       <Text style={styles.title}>More About You</Text>
-      <Text style={ styles.name}>Name</Text>
+      <Text style={styles.name}>Name</Text>
       <TextInput
         style={styles.input_name}
         placeholder="Full name"
@@ -100,7 +107,7 @@ const UserInfoScreen = () => {
         value={name}
         onChangeText={setName}
       />
-      <Text style={ styles.email}>Email-Address</Text>
+      <Text style={styles.email}>Email-Address</Text>
       <TextInput
         style={styles.input_email}
         placeholder="Email-address"
@@ -109,7 +116,7 @@ const UserInfoScreen = () => {
         onChangeText={setEmail}
         keyboardType="email-address"
       />
-      <Text style={ styles.gender}>Gender</Text>
+      <Text style={styles.gender}>Gender</Text>
       {/* <TextInput
         style={styles.input_gender}
         placeholder="Gender"
@@ -118,19 +125,19 @@ const UserInfoScreen = () => {
         onChangeText={setGender}
       /> */}
       <TextInput>
-        
+
       </TextInput>
       <Picker
-            selectedValue={gender}
-            onValueChange={(itemValue) => setGender(itemValue)}
-            style={styles.input_gender}
-          >
-            <Picker.Item label="Select gender" value="" />
-            <Picker.Item label="Male" value="male" />
-            <Picker.Item label="Female" value="female" />
-            <Picker.Item label="Other" value="other" />
+        selectedValue={gender}
+        onValueChange={(itemValue) => setGender(itemValue)}
+        style={styles.input_gender}
+      >
+        <Picker.Item label="Select gender" value="" />
+        <Picker.Item label="Male" value="male" />
+        <Picker.Item label="Female" value="female" />
+        <Picker.Item label="Other" value="other" />
       </Picker>
-      <Text style={ styles.age}>Age</Text>
+      <Text style={styles.age}>Age</Text>
       <TextInput
         style={styles.input_age}
         placeholder="Age"
@@ -139,10 +146,10 @@ const UserInfoScreen = () => {
         onChangeText={setAge}
         keyboardType="numeric"
       />
-      <View style={styles.button}> 
-      <PrimaryButton title="Proceed"  onPress={handleSaveUserInfo} />
+      <View style={styles.button}>
+        <PrimaryButton title="Proceed" onPress={handleSaveUserInfo} />
       </View>
-      
+
     </View>
   );
 };
@@ -155,104 +162,113 @@ const styles = StyleSheet.create({
     backgroundColor: '#1c2129',
   },
   title: {
-    position:'absolute',
+    position: 'absolute',
     fontSize: 24,
     top: 56,
-    left:111,
-    color:'#EDF6FF',
-    
+    left: 111,
+    color: '#EDF6FF',
+
   },
   input_name: {
-    position:'absolute',
-    color:'#EDF6FF',
-    borderColor:'white',
+    position: 'absolute',
+    color: '#EDF6FF',
+    borderColor: 'white',
     height: 52,
-    width:330,
-    left:40,
-    top:138,
+    width: 330,
+    left: 40,
+    top: 138,
     borderWidth: 1,
     borderRadius: 15,
     paddingHorizontal: 8,
   },
-  input_email:{
-    position:'absolute',
-    color:'#EDF6FF',
-    borderColor:'white',
+  input_email: {
+    position: 'absolute',
+    color: '#EDF6FF',
+    borderColor: 'white',
     height: 52,
-    width:330,
-    left:40,
-    top:235,
+    width: 330,
+    left: 40,
+    top: 235,
     borderWidth: 1,
     borderRadius: 15,
     paddingHorizontal: 8,
   },
-  input_gender:{
-    position:'absolute',
-    color:'#EDF6FF',
-    borderColor:'white',
+  input_gender: {
+    position: 'absolute',
+    color: '#EDF6FF',
+    borderColor: 'white',
     height: 52,
-    width:330,
-    left:40,
-    top:336,
+    width: 330,
+    left: 40,
+    top: 336,
     borderWidth: 1,
     borderRadius: 15,
     paddingHorizontal: 8,
-    borderColor:'white',
-    
+    borderColor: 'white',
+
   },
-  input_age:{
-    position:'absolute',
-    color:'#EDF6FF',
-    borderColor:'white',
+  input_age: {
+    position: 'absolute',
+    color: '#EDF6FF',
+    borderColor: 'white',
     height: 52,
-    width:330,
-    left:40,
-    top:435,
+    width: 330,
+    left: 40,
+    top: 435,
     borderWidth: 1,
     borderRadius: 15,
     paddingHorizontal: 8,
   },
-  name:{
-    position:'absolute',
-    color:'#EDF6FF',
-    left:40,
-    top:112,
-    fontSize:16,
-   
+  name: {
+    position: 'absolute',
+    color: '#EDF6FF',
+    left: 40,
+    top: 112,
+    fontSize: 16,
+
   },
-  email:{
-    position:'absolute',
-    color:'#EDF6FF',
-    left:40,
-    top:209,
-    fontSize:16,
+  email: {
+    position: 'absolute',
+    color: '#EDF6FF',
+    left: 40,
+    top: 209,
+    fontSize: 16,
   },
-  gender:{
-    position:'absolute',
-    color:'#EDF6FF',
-    left:40,
-    top:308,
-    fontSize:16,
+  gender: {
+    position: 'absolute',
+    color: '#EDF6FF',
+    left: 40,
+    top: 308,
+    fontSize: 16,
   },
-  age:{
-    position:'absolute',
-    color:'#EDF6FF',
-    left:40,
-    top:407,
-    fontSize:16,
+  age: {
+    position: 'absolute',
+    color: '#EDF6FF',
+    left: 40,
+    top: 407,
+    fontSize: 16,
   },
   button: {
     // backgroundColor: '#FFFFFF',
     borderRadius: 25,
-    padding:15,
+    padding: 15,
     width: 330,
     height: 52,
     alignItems: 'center',
-    left:30,
-    top:529,
-},
- 
-  
+    left: 30,
+    top: 529,
+  },
+  driver_button: {
+    position: 'absolute',
+    bottom: 20,
+    right: 30,
+  },
+  driver_buttonText: {
+    fontSize: 16,
+    color: '#80F17E',
+  },
+
+
 
 });
 

@@ -27,6 +27,7 @@ function Onboarding1() {
 
 
 
+
     return (
 
         <SafeAreaView style={styles.container}>

@@ -7,8 +7,6 @@ import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 
 const UserInfoScreen = () => {
-
-  // State variables to hold user input
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState('');
@@ -16,19 +14,15 @@ const UserInfoScreen = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
-
-  // Hook to access the current route and its parameters
   const route = useRoute();
-   const { firebaseId } = route.params;// Extract firebaseId from route parameters
+  const { firebaseId } = route.params;
 
-  // useEffect to fetch phone number from Firestore when the component mounts
   useEffect(() => {
     const fetchPhoneNumber = async () => {
       try {
-         // Fetch the document from Firestore using the provided firebaseId
         const doc = await firestore().collection('phoneNumbers').doc(firebaseId).get();
         if (doc.exists) {
-          setPhoneNumber(doc.data().number);// Set the phone number state if document exists
+          setPhoneNumber(doc.data().number);
         } else {
           Alert.alert('Error', 'Phone number not found');
         }
@@ -41,9 +35,10 @@ const UserInfoScreen = () => {
     };
 
     fetchPhoneNumber();
-  }, [firebaseId]);// Dependency array to ensure the effect runs only once or when firebaseId changes
+  }, [firebaseId]);
 
   const handleSaveUserInfo = async () => {
+    console.log('handleSaveUserInfo called');
     if (!name || !email || !gender || !age) {
       Alert.alert('Error', 'All fields are required');
       return;
@@ -59,8 +54,9 @@ const UserInfoScreen = () => {
         phoneNumber,
       };
 
-       // Send a POST request to the server with user data
-      const response = await fetch('http://192.168.190.52:3000/api/migrate', {
+      console.log('Sending userData: ', userData);
+
+      const response = await fetch('http://192.168.0.52:3000/api/migrate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -68,20 +64,24 @@ const UserInfoScreen = () => {
         body: JSON.stringify(userData),
       });
 
+      console.log('Response status: ', response.status);
+
       if (response.ok) {
+        console.log('User information saved successfully');
         Alert.alert('Success', 'User information saved successfully');
+        console.log('Navigating to HomeScreen');
         navigation.navigate('HomeScreen');
       } else {
         const errorText = await response.text();
+        console.log('Error text: ', errorText);
         Alert.alert('Error', `Failed to save user information: ${errorText}`);
       }
     } catch (error) {
       console.error('Error saving user information: ', error);
-      Alert.alert('Error', 'Failed to save user information');
+      Alert.alert('Error', 'FE Failed to save user information');
     }
   };
 
-  // Show loading indicator while fetching data
   if (loading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
   }
@@ -89,7 +89,7 @@ const UserInfoScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>More About You</Text>
-      <Text style={ styles.name}>Name</Text>
+      <Text style={styles.name}>Name</Text>
       <TextInput
         style={styles.input_name}
         placeholder="Full name"
@@ -97,7 +97,7 @@ const UserInfoScreen = () => {
         value={name}
         onChangeText={setName}
       />
-      <Text style={ styles.email}>Email-Address</Text>
+      <Text style={styles.email}>Email-Address</Text>
       <TextInput
         style={styles.input_email}
         placeholder="Email-address"
@@ -106,28 +106,18 @@ const UserInfoScreen = () => {
         onChangeText={setEmail}
         keyboardType="email-address"
       />
-      <Text style={ styles.gender}>Gender</Text>
-      {/* <TextInput
-        style={styles.input_gender}
-        placeholder="Gender"
-        placeholderTextColor="#888888"
-        value={gender}
-        onChangeText={setGender}
-      /> */}
-      <TextInput>
-        
-      </TextInput>
+      <Text style={styles.gender}>Gender</Text>
       <Picker
-            selectedValue={gender}
-            onValueChange={(itemValue) => setGender(itemValue)}
-            style={styles.input_gender}
-          >
-            <Picker.Item label="Select gender" value="" />
-            <Picker.Item label="Male" value="male" />
-            <Picker.Item label="Female" value="female" />
-            <Picker.Item label="Other" value="other" />
+        selectedValue={gender}
+        onValueChange={(itemValue) => setGender(itemValue)}
+        style={styles.input_gender}
+      >
+        <Picker.Item label="Select gender" value="" />
+        <Picker.Item label="Male" value="male" />
+        <Picker.Item label="Female" value="female" />
+        <Picker.Item label="Other" value="other" />
       </Picker>
-      <Text style={ styles.age}>Age</Text>
+      <Text style={styles.age}>Age</Text>
       <TextInput
         style={styles.input_age}
         placeholder="Age"
@@ -136,10 +126,9 @@ const UserInfoScreen = () => {
         onChangeText={setAge}
         keyboardType="numeric"
       />
-      <View style={styles.button}> 
-      <PrimaryButton title="Proceed"  onPress={handleSaveUserInfo} />
+      <View style={styles.button}>
+        <PrimaryButton title="Proceed" onPress={handleSaveUserInfo} />
       </View>
-      
     </View>
   );
 };
@@ -147,110 +136,102 @@ const UserInfoScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //justifyContent: 'center',
     padding: 16,
     backgroundColor: '#1c2129',
   },
   title: {
-    position:'absolute',
+    position: 'absolute',
     fontSize: 24,
     top: 56,
-    left:111,
-    color:'#EDF6FF',
-    
+    left: 111,
+    color: '#EDF6FF',
   },
   input_name: {
-    position:'absolute',
-    color:'#EDF6FF',
-    borderColor:'white',
+    position: 'absolute',
+    color: '#EDF6FF',
+    borderColor: 'white',
     height: 52,
-    width:330,
-    left:40,
-    top:138,
+    width: 330,
+    left: 40,
+    top: 138,
     borderWidth: 1,
     borderRadius: 15,
     paddingHorizontal: 8,
   },
-  input_email:{
-    position:'absolute',
-    color:'#EDF6FF',
-    borderColor:'white',
+  input_email: {
+    position: 'absolute',
+    color: '#EDF6FF',
+    borderColor: 'white',
     height: 52,
-    width:330,
-    left:40,
-    top:235,
+    width: 330,
+    left: 40,
+    top: 235,
     borderWidth: 1,
     borderRadius: 15,
     paddingHorizontal: 8,
   },
-  input_gender:{
-    position:'absolute',
-    color:'#EDF6FF',
-    borderColor:'white',
+  input_gender: {
+    position: 'absolute',
+    color: '#EDF6FF',
+    borderColor: 'white',
     height: 52,
-    width:330,
-    left:40,
-    top:336,
+    width: 330,
+    left: 40,
+    top: 336,
     borderWidth: 1,
     borderRadius: 15,
     paddingHorizontal: 8,
-    borderColor:'white',
-    
+    borderColor: 'white',
   },
-  input_age:{
-    position:'absolute',
-    color:'#EDF6FF',
-    borderColor:'white',
+  input_age: {
+    position: 'absolute',
+    color: '#EDF6FF',
+    borderColor: 'white',
     height: 52,
-    width:330,
-    left:40,
-    top:435,
+    width: 330,
+    left: 40,
+    top: 435,
     borderWidth: 1,
     borderRadius: 15,
     paddingHorizontal: 8,
   },
-  name:{
-    position:'absolute',
-    color:'#EDF6FF',
-    left:40,
-    top:112,
-    fontSize:16,
-   
+  name: {
+    position: 'absolute',
+    color: '#EDF6FF',
+    left: 40,
+    top: 112,
+    fontSize: 16,
   },
-  email:{
-    position:'absolute',
-    color:'#EDF6FF',
-    left:40,
-    top:209,
-    fontSize:16,
+  email: {
+    position: 'absolute',
+    color: '#EDF6FF',
+    left: 40,
+    top: 209,
+    fontSize: 16,
   },
-  gender:{
-    position:'absolute',
-    color:'#EDF6FF',
-    left:40,
-    top:308,
-    fontSize:16,
+  gender: {
+    position: 'absolute',
+    color: '#EDF6FF',
+    left: 40,
+    top: 308,
+    fontSize: 16,
   },
-  age:{
-    position:'absolute',
-    color:'#EDF6FF',
-    left:40,
-    top:407,
-    fontSize:16,
+  age: {
+    position: 'absolute',
+    color: '#EDF6FF',
+    left: 40,
+    top: 407,
+    fontSize: 16,
   },
   button: {
-    // backgroundColor: '#FFFFFF',
     borderRadius: 25,
-    padding:15,
+    padding: 15,
     width: 330,
     height: 52,
     alignItems: 'center',
-    left:30,
-    top:529,
-},
- 
-  
-
+    left: 30,
+    top: 529,
+  },
 });
 
 export default UserInfoScreen;

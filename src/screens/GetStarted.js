@@ -13,7 +13,7 @@ const GetStarted = () => {
         navigation.navigate('PhoneNo');
     };
 
-
+    
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar backgroundColor="#1C2129" barStyle="light-content" />

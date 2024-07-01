@@ -51,7 +51,7 @@ const OtpPage = () => {
             <Text style={styles.title}>OTP Verification</Text>
             <Text style={styles.prompt}>Please verify by entering the code that was sent to your phone number</Text>
 
-            {/* The OTP isn't getting popped away if clicked delete button of phone. Its only getting popped away if the back button is tapped after keeping the cursor in that particular box  */}
+            {/* The OTP isn't getting popped out if clicked delete button of phone. Its only getting popped out if the back button is tapped after keeping the cursor in that particular box  */}
             <View style={styles.otpContainer}>
                 {otp.map((digit, index) => (
                     <TextInput

@@ -10,6 +10,7 @@ import PhoneNo from '../screens/PhoneNo';
 import OtpPage from '../screens/OtpPage';
 import VerifiedPage from '../screens/VerifiedPage';
 import UserInfoScreen from '../screens/UserInfoScreen';
+import DriverInfoScreen from '../screens/DriverInfoScreen';
 
 const Stack = createNativeStackNavigator()
 
@@ -25,6 +26,7 @@ function StackNavigation() {
             <Stack.Screen name='OtpPage' component={OtpPage} />
             <Stack.Screen name='VerifiedPage'component={VerifiedPage}/>
             <Stack.Screen name='UserInfoScreen'component={UserInfoScreen}/>
+            <Stack.Screen name='DriverInfoScreen' component={DriverInfoScreen} />
         </Stack.Navigator>
     );
 }

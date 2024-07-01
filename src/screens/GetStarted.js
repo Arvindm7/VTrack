@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, StatusBar, Image } from 'react-native';
+import { View, Text, StyleSheet, StatusBar, Image, TouchableOpacity } from 'react-native';
 import Car4 from "../Images/Car4.png"
 import PrimaryButton from "../components/PrimaryButton"
 import SecondaryButton from "../components/SecondaryButton"

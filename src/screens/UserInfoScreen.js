@@ -8,8 +8,6 @@ import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../Context/AuthProvider';
 
 const UserInfoScreen = () => {
-
-  // State variables to hold user input
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState('');
@@ -17,21 +15,17 @@ const UserInfoScreen = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
-
-  // Hook to access the current route and its parameters
   const route = useRoute();
-  const { firebaseId } = route.params;// Extract firebaseId from route parameters
-
-  const { isLogged, setIsLogged } = useAuth();
+   const { firebaseId } = route.params;// Extract firebaseId from route parameters
 
   // useEffect to fetch phone number from Firestore when the component mounts
   useEffect(() => {
     const fetchPhoneNumber = async () => {
       try {
-        // Fetch the document from Firestore using the provided firebaseId
+         // Fetch the document from Firestore using the provided firebaseId
         const doc = await firestore().collection('phoneNumbers').doc(firebaseId).get();
         if (doc.exists) {
-          setPhoneNumber(doc.data().number);// Set the phone number state if document exists
+          setPhoneNumber(doc.data().number);
         } else {
           Alert.alert('Error', 'Phone number not found');
         }
@@ -44,9 +38,10 @@ const UserInfoScreen = () => {
     };
 
     fetchPhoneNumber();
-  }, [firebaseId]);// Dependency array to ensure the effect runs only once or when firebaseId changes
+  }, [firebaseId]);
 
   const handleSaveUserInfo = async () => {
+    console.log('handleSaveUserInfo called');
     if (!name || !email || !gender || !age) {
       Alert.alert('Error', 'All fields are required');
       return;
@@ -62,8 +57,8 @@ const UserInfoScreen = () => {
         phoneNumber,
       };
 
-      // Send a POST request to the server with user data
-      const response = await fetch('http://192.168.1.4:3000/api/migrate', {
+       // Send a POST request to the server with user data
+      const response = await fetch('http://192.168.190.52:3000/api/migrate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -71,20 +66,23 @@ const UserInfoScreen = () => {
         body: JSON.stringify(userData),
       });
 
+      console.log('Response status: ', response.status);
+
       if (response.ok) {
+        console.log('User information saved successfully');
         Alert.alert('Success', 'User information saved successfully');
-        setIsLogged(!isLogged);
+        navigation.navigate('HomeScreen');
       } else {
         const errorText = await response.text();
+        console.log('Error text: ', errorText);
         Alert.alert('Error', `Failed to save user information: ${errorText}`);
       }
     } catch (error) {
       console.error('Error saving user information: ', error);
-      Alert.alert('Error', 'Failed to save user information');
+      Alert.alert('Error', 'FE Failed to save user information');
     }
   };
 
-  // Show loading indicator while fetching data
   if (loading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
   }
@@ -116,7 +114,7 @@ const UserInfoScreen = () => {
         onChangeText={setEmail}
         keyboardType="email-address"
       />
-      <Text style={styles.gender}>Gender</Text>
+      <Text style={ styles.gender}>Gender</Text>
       {/* <TextInput
         style={styles.input_gender}
         placeholder="Gender"
@@ -125,7 +123,7 @@ const UserInfoScreen = () => {
         onChangeText={setGender}
       /> */}
       <TextInput>
-
+        
       </TextInput>
       <Picker
         selectedValue={gender}
@@ -149,7 +147,7 @@ const UserInfoScreen = () => {
       <View style={styles.button}>
         <PrimaryButton title="Proceed" onPress={handleSaveUserInfo} />
       </View>
-
+      
     </View>
   );
 };
@@ -157,7 +155,6 @@ const UserInfoScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //justifyContent: 'center',
     padding: 16,
     backgroundColor: '#1c2129',
   },
@@ -165,9 +162,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     fontSize: 24,
     top: 56,
-    left: 111,
-    color: '#EDF6FF',
-
+    left:111,
+    color:'#EDF6FF',
+    
   },
   input_name: {
     position: 'absolute',
@@ -204,8 +201,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 15,
     paddingHorizontal: 8,
-    borderColor: 'white',
-
+    borderColor:'white',
+    
   },
   input_age: {
     position: 'absolute',
@@ -219,13 +216,13 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     paddingHorizontal: 8,
   },
-  name: {
-    position: 'absolute',
-    color: '#EDF6FF',
-    left: 40,
-    top: 112,
-    fontSize: 16,
-
+  name:{
+    position:'absolute',
+    color:'#EDF6FF',
+    left:40,
+    top:112,
+    fontSize:16,
+   
   },
   email: {
     position: 'absolute',
@@ -249,26 +246,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   button: {
-    // backgroundColor: '#FFFFFF',
     borderRadius: 25,
     padding: 15,
     width: 330,
     height: 52,
     alignItems: 'center',
-    left: 30,
-    top: 529,
-  },
-  driver_button: {
-    position: 'absolute',
-    bottom: 20,
-    right: 30,
-  },
-  driver_buttonText: {
-    fontSize: 16,
-    color: '#80F17E',
-  },
-
-
+    left:30,
+    top:529,
+},
+ 
+  
 
 });
 

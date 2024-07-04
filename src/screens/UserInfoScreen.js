@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator,TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator, TouchableOpacity } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { useRoute } from '@react-navigation/native';
 import PrimaryButton from '../components/PrimaryButton';
@@ -16,13 +16,14 @@ const UserInfoScreen = () => {
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
   const route = useRoute();
-   const { firebaseId } = route.params;// Extract firebaseId from route parameters
+  const { firebaseId } = route.params;// Extract firebaseId from route parameters
+  const {isLogged, setIsLogged} = useAuth();
 
   // useEffect to fetch phone number from Firestore when the component mounts
   useEffect(() => {
     const fetchPhoneNumber = async () => {
       try {
-         // Fetch the document from Firestore using the provided firebaseId
+        // Fetch the document from Firestore using the provided firebaseId
         const doc = await firestore().collection('phoneNumbers').doc(firebaseId).get();
         if (doc.exists) {
           setPhoneNumber(doc.data().number);
@@ -57,8 +58,8 @@ const UserInfoScreen = () => {
         phoneNumber,
       };
 
-       // Send a POST request to the server with user data
-      const response = await fetch('http://192.168.190.52:3000/api/migrate', {
+      // Send a POST request to the server with user data
+      const response = await fetch('http://192.168.139.52:3000/api/migrate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -71,7 +72,8 @@ const UserInfoScreen = () => {
       if (response.ok) {
         console.log('User information saved successfully');
         Alert.alert('Success', 'User information saved successfully');
-        navigation.navigate('HomeScreen');
+        setIsLogged(!isLogged);
+        // navigation.navigate('HomeScreen');
       } else {
         const errorText = await response.text();
         console.log('Error text: ', errorText);
@@ -88,7 +90,7 @@ const UserInfoScreen = () => {
   }
 
   const handleDriverSignIn = () => {
-    navigation.navigate('DriverInfoScreen',{ ...route.params });
+    navigation.navigate('DriverInfoScreen', { ...route.params });
   }
 
   return (
@@ -114,7 +116,7 @@ const UserInfoScreen = () => {
         onChangeText={setEmail}
         keyboardType="email-address"
       />
-      <Text style={ styles.gender}>Gender</Text>
+      <Text style={styles.gender}>Gender</Text>
       {/* <TextInput
         style={styles.input_gender}
         placeholder="Gender"
@@ -123,7 +125,7 @@ const UserInfoScreen = () => {
         onChangeText={setGender}
       /> */}
       <TextInput>
-        
+
       </TextInput>
       <Picker
         selectedValue={gender}
@@ -147,7 +149,7 @@ const UserInfoScreen = () => {
       <View style={styles.button}>
         <PrimaryButton title="Proceed" onPress={handleSaveUserInfo} />
       </View>
-      
+
     </View>
   );
 };
@@ -162,9 +164,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     fontSize: 24,
     top: 56,
-    left:111,
-    color:'#EDF6FF',
-    
+    left: 111,
+    color: '#EDF6FF',
+
   },
   input_name: {
     position: 'absolute',
@@ -201,8 +203,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 15,
     paddingHorizontal: 8,
-    borderColor:'white',
-    
+    borderColor: 'white',
+
   },
   input_age: {
     position: 'absolute',
@@ -216,13 +218,13 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     paddingHorizontal: 8,
   },
-  name:{
-    position:'absolute',
-    color:'#EDF6FF',
-    left:40,
-    top:112,
-    fontSize:16,
-   
+  name: {
+    position: 'absolute',
+    color: '#EDF6FF',
+    left: 40,
+    top: 112,
+    fontSize: 16,
+
   },
   email: {
     position: 'absolute',
@@ -251,11 +253,11 @@ const styles = StyleSheet.create({
     width: 330,
     height: 52,
     alignItems: 'center',
-    left:30,
-    top:529,
-},
- 
-  
+    left: 30,
+    top: 529,
+  },
+
+
 
 });
 

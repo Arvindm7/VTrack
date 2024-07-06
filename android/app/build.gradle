@@ -111,6 +111,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:33.0.0')    // added during firebase setup
     implementation 'com.google.firebase:firebase-analytics'              // added during firebase setup
     implementation("com.google.firebase:firebase-auth")                 // added during firebase setup
+    implementation 'com.google.android.gms:play-services-location:17.0.0' // added during maps setup
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")

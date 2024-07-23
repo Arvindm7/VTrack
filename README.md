@@ -1,79 +1,155 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# VTrack: Real-time Vehicle Tracking and Booking System
 
-# Getting Started
+## Objectives
+1. Develop a mobile app for real-time tracking and booking of rented cars.
+2. Implement secure user authentication and data management.
+3. Integrate real-time maps for vehicle tracking.
+4. Ensure a seamless user experience across devices.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Introduction
+VTrack enhances efficiency in the vehicle rental industry by offering real-time tracking, booking, and management through a user-friendly mobile app. It uses Firebase for authentication, MongoDB for data management, and Google Maps API for real-time tracking.
 
-## Step 1: Start the Metro Server
+## System Model
+- **Frontend**: React Native for cross-platform consistency.
+- **Backend**: Firebase for authentication and real-time DB management; MongoDB for complex data storage.
+- **Maps Integration**: Google Maps API for real-time tracking.
+- **OTP Verification**: Secure OTP-based user verification using Firebase Authentication.
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+## Flowchart
+1. **User Registration/Login**:
+   - Enter phone number
+   - OTP sent and verified
+   - User details stored
 
-To start Metro, run the following command from the _root_ of your React Native project:
+2. **Vehicle Booking**:
+   - Select a vehicle
+   - Confirm booking details
+   - Store booking details
 
-```bash
-# using npm
-npm start
+3. **Real-time Tracking**:
+   - Track vehicle in real-time using Google Maps
 
-# OR using Yarn
-yarn start
+## Implementation Details
+
+### OTP Function
+```javascript
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+
+const sendOTP = async (phoneNumber, countryCode) => {
+  try {
+    const fullPhoneNumber = `+${countryCode}${phoneNumber}`;
+    const response = await auth().signInWithPhoneNumber(fullPhoneNumber);
+    setConfirmData(response);
+    Alert.alert('OTP Sent', `OTP has been sent to +${countryCode} ${phoneNumber}`);
+
+    // Save phone number to Firestore
+    const docRef = await firestore().collection('phoneNumbers').add({
+      number: phoneNumber,
+      timestamp: firestore.FieldValue.serverTimestamp(),
+    });
+
+    return { success: true, docId: docRef.id, confirmData: response };
+  } catch (error) {
+    console.error(error);
+    return { success: false, error: error.message };
+  }
+};
 ```
 
-## Step 2: Start your Application
+### Maps Fetching Code
+```javascript
+import MapView, { Marker } from 'react-native-maps';
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+const MapScreen = ({ route }) => {
+  const { latitude, longitude } = route.params;
 
-### For Android
+  return (
+    <View style={styles.container}>
+      <MapView
+        style={styles.map}
+        initialRegion={{
+          latitude: latitude,
+          longitude: longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+      >
+        <Marker
+          coordinate={{ latitude: latitude, longitude: longitude }}
+          title={"Vehicle Location"}
+        />
+      </MapView>
+    </View>
+  );
+};
 
-```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
+export default MapScreen;
 ```
 
-### For iOS
+### DB Connection (MongoDB)
+```javascript
+const mongoose = require('mongoose');
 
-```bash
-# using npm
-npm run ios
+const connectDB = async () => {
+  try {
+    await mongoose.connect('mongodb://your_mongo_db_uri', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('MongoDB connected...');
+  } catch (err) {
+    console.error(err.message);
+    process.exit(1);
+  }
+};
 
-# OR using Yarn
-yarn ios
+connectDB();
 ```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+### Installation Guide
+- Pre-requisites:
+- Node.js
+- npm
+- MongoDB
+- Firebase account
+- Google Maps API key
+  
+### Steps:
+Clone the repository:
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+```
+git clone https://github.com/Arvindm7/VTrack.git
+cd VTrack
+```
 
-## Step 3: Modifying your App
+Install dependencies:
 
-Now that you have successfully run the app, let's modify it.
+```
+npm install
+```
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+Set up Firebase:
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+- Go to Firebase console.
+- Create a new project.
+- Set up authentication and Firestore.
+- Download google-services.json and place it in android/app.
+- Download GoogleService-Info.plist and place it in ios.
+- Set up Google Maps API:
+- Go to Google Cloud Console.
+- Enable Maps SDK for Android and iOS.
+- Obtain an API key and add it to your AndroidManifest.xml and AppDelegate.m.
+- Run the app:
 
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+```
+npx react-native run-android
+npx react-native run-ios
+```
+References
+- Firebase Documentation
+- React Native Documentation
+- Google Maps API Documentation
+- MongoDB Documentation
